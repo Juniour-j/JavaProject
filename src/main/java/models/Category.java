@@ -12,7 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @ToString(exclude = "products")
-class Category {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,4 +24,8 @@ class Category {
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<Product> products = new HashSet<>();
+
+    public Category(String name) {
+        this.name = name;
+    }
 }

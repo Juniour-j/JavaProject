@@ -38,4 +38,9 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Purchase> purchases = new HashSet<>();
+
+    public Product(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
 }

@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @ToString(exclude = "products")
-class Store {
+public class Store {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,5 +36,9 @@ class Store {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private Set<Product> products = new HashSet<>();
-}
 
+    public Store(String name, String location) {
+        this.name = name;
+        this.location = location;
+    }
+}
