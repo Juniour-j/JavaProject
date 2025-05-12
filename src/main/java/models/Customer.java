@@ -30,7 +30,7 @@ public class Customer {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true) //cascade all operations to the purchase,orphanRemoval is used to remove purchases when the customer is removed
     private Set<Purchase> purchases = new HashSet<>();
 
     public Customer(String name, String email) {
