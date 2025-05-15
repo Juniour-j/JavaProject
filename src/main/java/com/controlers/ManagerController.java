@@ -1,5 +1,5 @@
 package com.controlers;
-import com.DTO.*;
+import com.dto.*;
 import com.mappers.UserMapper;
 import com.models.Role;
 import com.models.User;
@@ -26,7 +26,7 @@ public class ManagerController {
     private final UserMapper userMapper;
 
     @Autowired
-    public ManagerController(UserService userService, UserMapper userMapper) {
+    public ManagerController(UserService userService, UserMapper userMapper) { // we are using constructor injection
         this.userService = userService;
         this.userMapper = userMapper;
     }
@@ -35,9 +35,9 @@ public class ManagerController {
     public String listManagers(Model model, HttpSession session) {
         if (!isAuthenticated(session)) return "redirect:/login";
 
-        List<User> managers = userService.getAllUsersByRole(Role.ADMIN);
-        List<UserDTO> managerDTOs = userMapper.toDTOList(managers);
-        model.addAttribute("managers", managerDTOs);
+        List<User> managers = userService.getAllUsersByRole(Role.ADMIN); // we are using the role ADMIN to get all managers
+        List<UserDTO> managerDTOs = userMapper.toDTOList(managers); // we are using the mapper to convert the list of managers to DTOs
+        model.addAttribute("managers", managerDTOs); // we are adding the list of managers to the model
         return "managers/list";
     }
 
@@ -45,7 +45,7 @@ public class ManagerController {
     public String showAddForm(Model model, HttpSession session) {
         if (!isAuthenticated(session)) return "redirect:/login";
 
-        model.addAttribute("user", new UserDTO());
+        model.addAttribute("user", new UserDTO()); // create a new empty DTO for the form
         return "managers/form";
     }
 
@@ -53,14 +53,14 @@ public class ManagerController {
     public String showEditForm(@PathVariable Long id, Model model, HttpSession session) {
         if (!isAuthenticated(session)) return "redirect:/login";
 
-        User user = userService.getUserById(id).orElseThrow(() ->
+        User user = userService.getUserById(id).orElseThrow(() ->  // lambda expression to handle the case when the user is not found
                 new IllegalArgumentException("Invalid manager ID: " + id));
         model.addAttribute("user", userMapper.toDTOWithPassword(user));
         return "managers/form";
     }
 
     @PostMapping("/save")
-    public String saveManager(@Valid @ModelAttribute("user") UserDTO userDTO,
+    public String saveManager(@Valid @ModelAttribute("user") UserDTO userDTO, // we are using the DTO to bind the form data
                               BindingResult result,
                               RedirectAttributes redirectAttributes,
                               HttpSession session) {
@@ -70,10 +70,10 @@ public class ManagerController {
 
         try {
             if (userDTO.getId() == null) {
-                userService.registerUser(userMapper.toEntity(userDTO), Role.ADMIN);
+                userService.registerUser(userMapper.toEntity(userDTO), Role.ADMIN); // we are using the mapper to convert the DTO to entity
             } else {
                 User existing = userService.getUserById(userDTO.getId()).orElseThrow();
-                existing.setUsername(userDTO.getUsername());
+                existing.setUsername(userDTO.getUsername()); // update the existing user
                 existing.setEmail(userDTO.getEmail());
                 existing.setLastName(userDTO.getLastName());
                 userService.saveUser(existing);

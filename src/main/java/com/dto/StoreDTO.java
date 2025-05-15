@@ -1,22 +1,28 @@
-package com.DTO;
+package com.dto;
+
 import jakarta.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
-public class CategoryDTO {
+
+public class StoreDTO {
 
     private Long id;
 
-    @NotBlank(message = "Category name is required")
+    @NotBlank(message = "Store name is required")
     private String name;
+
+    @NotBlank(message = "Location is required")
+    private String location;
 
     private Set<Long> productIds = new HashSet<>();
 
-    public CategoryDTO() {
+    public StoreDTO() {
     }
 
-    public CategoryDTO(Long id, String name) {
+    public StoreDTO(Long id, String name, String location) {
         this.id = id;
         this.name = name;
+        this.location = location;
     }
 
     public Long getId() {
@@ -35,6 +41,14 @@ public class CategoryDTO {
         this.name = name;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public Set<Long> getProductIds() {
         return productIds;
     }
@@ -43,5 +57,3 @@ public class CategoryDTO {
         this.productIds = productIds;
     }
 }
-
-

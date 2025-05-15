@@ -1,5 +1,5 @@
 package com.mappers;
-import com.DTO.*;
+import com.dto.*;
 import com.models.*;
 import org.springframework.stereotype.Component;
 

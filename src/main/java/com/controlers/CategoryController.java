@@ -1,5 +1,5 @@
 package com.controlers;
-import com.DTO.*;
+import com.dto.*;
 
 import com.services.*;
 import jakarta.servlet.http.HttpSession;
@@ -16,20 +16,20 @@ import com.mappers.*;
 @RequestMapping("/categories")
 public class CategoryController {
 
-    @Autowired private CategoryService categoryService;
-    @Autowired private CategoryMapper categoryMapper;
+    @Autowired private CategoryService categoryService; // wiring the service to the controller
+    @Autowired private CategoryMapper categoryMapper; // again, wiring the mapper to the controller
 
     @GetMapping
     public String list(Model model, HttpSession session) {
         if (!isAuthenticated(session)) return "redirect:/login";
-        model.addAttribute("categories", categoryMapper.toDTOList(categoryService.getAllCategories()));
+        model.addAttribute("categories", categoryMapper.toDTOList(categoryService.getAllCategories())); // we use the mapper to convert the list of entities to DTOs
         return "categories/list";
     }
 
     @GetMapping("/add")
     public String add(Model model, HttpSession session) {
         if (!isAuthenticated(session)) return "redirect:/login";
-        model.addAttribute("category", new CategoryDTO());
+        model.addAttribute("category", new CategoryDTO()); // create a new empty DTO for the form
         return "categories/form";
     }
 
@@ -37,7 +37,7 @@ public class CategoryController {
     public String edit(@PathVariable Long id, Model model, HttpSession session) {
         if (!isAuthenticated(session)) return "redirect:/login";
         model.addAttribute("category", categoryMapper.toDTO(
-                categoryService.getCategoryById(id).orElseThrow()));
+                categoryService.getCategoryById(id).orElseThrow())); // convert the entity to DTO
         return "categories/form";
     }
 
@@ -46,21 +46,21 @@ public class CategoryController {
                        RedirectAttributes ra, HttpSession session) {
         if (!isAuthenticated(session)) return "redirect:/login";
         if (result.hasErrors()) return "categories/form";
-        categoryService.saveCategory(categoryMapper.toEntity(dto));
-        ra.addFlashAttribute("success", "Category saved!");
+        categoryService.saveCategory(categoryMapper.toEntity(dto)); // convert the DTO to entity
+        ra.addFlashAttribute("success", "Category saved!"); // flash attribute for success message
         return "redirect:/categories";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes ra, HttpSession session) {
         if (!isAuthenticated(session)) return "redirect:/login";
-        categoryService.deleteCategory(id);
+        categoryService.deleteCategory(id); // delete the category by ID
         ra.addFlashAttribute("success", "Category deleted!");
         return "redirect:/categories";
     }
 
     private boolean isAuthenticated(HttpSession session) {
-        Boolean authenticated = (Boolean) session.getAttribute("authenticated");
+        Boolean authenticated = (Boolean) session.getAttribute("authenticated"); // check if the user is authenticated
         return authenticated != null && authenticated;
     }
 }

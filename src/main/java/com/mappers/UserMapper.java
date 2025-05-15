@@ -1,6 +1,6 @@
 package com.mappers;
 
-import com.DTO.UserDTO;
+import com.dto.UserDTO;
 import com.models.User;
 import org.springframework.stereotype.Component;
 

@@ -1,11 +1,13 @@
 package com.app;
 
 import com.models.*;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import com.services.*;
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.time.LocalDate;
 
@@ -13,7 +15,9 @@ import java.time.LocalDate;
  * Main application class for the Retail Purchase Management System.
  */
 @SpringBootApplication
-@ComponentScan(basePackages = "com.*")
+@ComponentScan(basePackages = "com")
+@EnableJpaRepositories(basePackages = "com.repository")
+@EntityScan(basePackages = "com.models")
 public class Application {
 
     private final ProductService productService;

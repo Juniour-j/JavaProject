@@ -3,13 +3,18 @@ package com.services;
 import com.models.*;
 import com.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@ComponentScan(basePackages = "com.repository.ProductRepository")
 public class ProductService {
-    @Autowired private ProductRepository productRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();
