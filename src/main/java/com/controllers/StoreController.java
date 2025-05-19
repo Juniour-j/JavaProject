@@ -1,4 +1,4 @@
-package com.controlers;
+package com.controllers;
 import com.dto.*;
 import com.mappers.*;
 import com.services.*;

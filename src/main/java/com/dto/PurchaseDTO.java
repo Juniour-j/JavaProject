@@ -17,9 +17,9 @@ public class PurchaseDTO {
     private String productName;
 
     private LocalDate purchaseDate;
-
     public PurchaseDTO() {
     }
+
 
     public PurchaseDTO(Long id, Long customerId, Long productId, LocalDate purchaseDate) {
         this.id = id;

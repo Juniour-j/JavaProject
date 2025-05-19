@@ -1,5 +1,6 @@
 package com.models;
 
+import com.dto.ProductDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,5 +35,5 @@ public class Purchase {
         this.product = product;
         this.purchaseDate = purchaseDate;
     }
-}
 
+}

@@ -1,6 +1,7 @@
-package com.controlers;
+package com.controllers;
 import com.dto.*;
 
+import com.models.Category;
 import com.services.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -14,6 +15,7 @@ import com.mappers.*;
 
 @Controller
 @RequestMapping("/categories")
+
 public class CategoryController {
 
     @Autowired private CategoryService categoryService; // wiring the service to the controller
@@ -25,7 +27,14 @@ public class CategoryController {
         model.addAttribute("categories", categoryMapper.toDTOList(categoryService.getAllCategories())); // we use the mapper to convert the list of entities to DTOs
         return "categories/list";
     }
-
+    @GetMapping("/details/{id}")
+    public String details(@PathVariable Long id, Model model, HttpSession session) {
+        if (!isAuthenticated(session)) return "redirect:/login";
+        Category category = categoryService.getCategoryById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid ID: " + id));
+        model.addAttribute("category", categoryMapper.toDTO(category));
+        return "categories/details";
+    }
     @GetMapping("/add")
     public String add(Model model, HttpSession session) {
         if (!isAuthenticated(session)) return "redirect:/login";

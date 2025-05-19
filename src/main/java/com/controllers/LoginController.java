@@ -1,4 +1,4 @@
-package com.controlers;
+package com.controllers;
 import jakarta.validation.Valid;
 import com.models.Role;
 import com.models.User;

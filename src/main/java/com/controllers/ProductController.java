@@ -1,4 +1,4 @@
-package com.controlers;
+package com.controllers;
 import com.dto.*;
 import com.models.*;
 import com.mappers.*;
@@ -39,7 +39,16 @@ public class ProductController {
         model.addAttribute("products", products);
         return "products/list";
     }
+    @GetMapping("/details/{id}")
+    public String showProductDetails(@PathVariable Long id, Model model, HttpSession session) {
+        if (!isAuthenticated(session)) return "redirect:/login";
 
+        Product product = productService.getProductById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid product ID: " + id));
+
+        model.addAttribute("product", productMapper.toDTO(product));
+        return "products/details";
+    }
     @GetMapping("/add")
     public String showAddForm(Model model, HttpSession session) {
         if (!isAuthenticated(session)) return "redirect:/login";

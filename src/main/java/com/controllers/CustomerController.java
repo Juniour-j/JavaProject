@@ -1,4 +1,4 @@
-package com.controlers;
+package com.controllers;
 import com.dto.*;
 import com.mappers.*;
 import com.services.*;
@@ -48,7 +48,18 @@ public class CustomerController {
         ra.addFlashAttribute("success", "Customer saved!");
         return "redirect:/customers";
     }
+    @GetMapping("/details/{id}")
+    public String showCustomerDetails(@PathVariable Long id, Model model, HttpSession session) {
+        if (!isAuthenticated(session)) return "redirect:/login";
 
+        CustomerDTO customer = customerMapper.toDTO(
+                customerService.getCustomerById(id)
+                        .orElseThrow(() -> new IllegalArgumentException("Invalid customer ID: " + id))
+        );
+
+        model.addAttribute("customer", customer);
+        return "customers/details";
+    }
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes ra, HttpSession session) {
         if (!isAuthenticated(session)) return "redirect:/login";

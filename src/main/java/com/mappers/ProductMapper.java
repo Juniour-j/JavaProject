@@ -31,6 +31,13 @@ public class ProductMapper {
         product.setId(dto.getId());
         product.setName(dto.getName());
         product.setPrice(dto.getPrice());
+
+        if (dto.getCategoryId() != null) {
+            Category category = new Category();
+            category.setId(dto.getCategoryId());
+            product.setCategory(category);
+        }
+
         return product;
     }
 

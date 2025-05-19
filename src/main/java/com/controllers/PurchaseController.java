@@ -1,4 +1,4 @@
-package com.controlers;
+package com.controllers;
 import com.dto.*;
 import com.mappers.*;
 import com.services.*;
@@ -35,7 +35,18 @@ class PurchaseController {
         model.addAttribute("products", productService.getAllProducts());
         return "purchases/form";
     }
+    @GetMapping("/details/{id}")
+    public String showPurchaseDetails(@PathVariable Long id, Model model, HttpSession session) {
+        if (!isAuthenticated(session)) return "redirect:/login";
 
+        PurchaseDTO purchase = purchaseMapper.toDTO(
+                purchaseService.getPurchaseById(id)
+                        .orElseThrow(() -> new IllegalArgumentException("Invalid purchase ID: " + id))
+        );
+
+        model.addAttribute("purchase", purchase);
+        return "purchases/details";
+    }
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute("purchase") PurchaseDTO dto, BindingResult result,
                        RedirectAttributes ra, HttpSession session) {
