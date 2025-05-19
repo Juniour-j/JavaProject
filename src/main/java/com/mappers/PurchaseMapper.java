@@ -26,6 +26,12 @@ public class PurchaseMapper {
         Purchase purchase = new Purchase();
         purchase.setId(dto.getId());
         purchase.setPurchaseDate(dto.getPurchaseDate());
+        Customer customer = new Customer();
+        customer.setId(dto.getCustomerId());
+        purchase.setCustomer(customer);
+        Product product = new Product();
+        product.setId(dto.getProductId());
+        purchase.setProduct(product);
         return purchase;
     }
 
