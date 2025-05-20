@@ -26,5 +26,9 @@ public class CategoryService {
     public void deleteCategory(Long id) {
         categoryRepository.deleteById(id);
     }
+
+    public List<Category> searchCategoriesByName(String text) {
+        return categoryRepository.findByNameContainingIgnoreCase(text);
+    }
 }
 

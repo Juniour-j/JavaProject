@@ -49,6 +49,14 @@ public class ProductController {
         model.addAttribute("product", productMapper.toDTO(product));
         return "products/details";
     }
+    @GetMapping("/search")
+    public String search(@RequestParam("searchText") String searchText, Model model, HttpSession session) {
+        if (!isAuthenticated(session)) return "redirect:/login";
+        List<Product> result = productService.searchProducts(searchText);
+        model.addAttribute("products", productMapper.toDTOList(result));
+        model.addAttribute("searchText", searchText);
+        return "products/list";
+    }
     @GetMapping("/add")
     public String showAddForm(Model model, HttpSession session) {
         if (!isAuthenticated(session)) return "redirect:/login";

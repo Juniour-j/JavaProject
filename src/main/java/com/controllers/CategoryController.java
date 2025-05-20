@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.mappers.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/categories")
 
@@ -27,6 +29,15 @@ public class CategoryController {
         model.addAttribute("categories", categoryMapper.toDTOList(categoryService.getAllCategories())); // we use the mapper to convert the list of entities to DTOs
         return "categories/list";
     }
+    @GetMapping("/search")
+    public String search(@RequestParam("search") String searchText, Model model, HttpSession session) {
+        if (!isAuthenticated(session)) return "redirect:/login";
+        List<Category> result = categoryService.searchCategoriesByName(searchText);
+        model.addAttribute("categories", categoryMapper.toDTOList(result));
+        model.addAttribute("searchText", searchText);
+        return "categories/list";
+    }
+
     @GetMapping("/details/{id}")
     public String details(@PathVariable Long id, Model model, HttpSession session) {
         if (!isAuthenticated(session)) return "redirect:/login";

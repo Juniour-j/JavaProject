@@ -1,6 +1,7 @@
 package com.controllers;
 import com.dto.*;
 import com.mappers.*;
+import com.models.Customer;
 import com.services.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -10,6 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
+
 @Controller
 @RequestMapping("/customers")
 public class CustomerController {
@@ -66,6 +70,14 @@ public class CustomerController {
         customerService.deleteCustomer(id); // delete the customer by ID
         ra.addFlashAttribute("success", "Customer deleted!");
         return "redirect:/customers";
+    }
+    @GetMapping("/search")
+    public String search(@RequestParam("searchText") String searchText, Model model, HttpSession session) {
+        if (!isAuthenticated(session)) return "redirect:/login";
+        List<Customer> result = customerService.searchCustomersByNameOrEmail(searchText);
+        model.addAttribute("customers", customerMapper.toDTOList(result));
+        model.addAttribute("searchText", searchText);
+        return "customers/list";
     }
 
     private boolean isAuthenticated(HttpSession session) {

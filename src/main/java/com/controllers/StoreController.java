@@ -1,6 +1,7 @@
 package com.controllers;
 import com.dto.*;
 import com.mappers.*;
+import com.models.Store;
 import com.services.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -10,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/stores")
@@ -57,7 +60,23 @@ public class StoreController {
         ra.addFlashAttribute("success", "Store deleted!");
         return "redirect:/stores";
     }
+    @GetMapping("/details/{id}")
+    public String details(@PathVariable Long id, Model model, HttpSession session) {
+        if (!isAuthenticated(session)) return "redirect:/login";
 
+        Store store = storeService.getStoreById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid store ID: " + id));
+        model.addAttribute("store", storeMapper.toDTO(store));
+        return "stores/details";
+    }
+    @GetMapping("/search")
+    public String search(@RequestParam("search") String searchText, Model model, HttpSession session) {
+        if (!isAuthenticated(session)) return "redirect:/login";
+        List<Store> result = storeService.searchStoresByNameOrLocation(searchText);
+        model.addAttribute("stores", storeMapper.toDTOList(result));
+        model.addAttribute("search", searchText);
+        return "stores/list";
+    }
     private boolean isAuthenticated(HttpSession session) {
         Boolean authenticated = (Boolean) session.getAttribute("authenticated");
         return authenticated != null && authenticated;

@@ -20,6 +20,9 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public List<Product> searchProducts(String text) {
+        return productRepository.findByNameContainingIgnoreCaseOrCategory_NameContainingIgnoreCase(text, text);
+    }
     public Optional<Product> getProductById(Long id) {
         return productRepository.findById(id);
     }

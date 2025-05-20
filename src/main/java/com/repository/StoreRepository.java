@@ -9,4 +9,6 @@ import java.util.List;
 public interface StoreRepository extends JpaRepository<Store, Long> {
     List<Store> findByLocation(String location);
     List<Store> findByNameContainingIgnoreCase(String name);
+
+    List<Store> findByNameContainingIgnoreCaseOrLocationContainingIgnoreCase(String name, String location);
 }

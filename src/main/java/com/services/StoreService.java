@@ -26,4 +26,8 @@ public class StoreService {
     public void deleteStore(Long id) {
         storeRepository.deleteById(id);
     }
+    public List<Store> searchStoresByNameOrLocation(String text) {
+        return storeRepository.findByNameContainingIgnoreCaseOrLocationContainingIgnoreCase(text, text);
+    }
+
 }
